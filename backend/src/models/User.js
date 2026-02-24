@@ -3,7 +3,12 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
     {
-        name: {
+        firstName: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        lastName: {
             type: String,
             required: true,
             trim: true
@@ -19,6 +24,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             minlength: 8
+        },
+        profilePhoto: {
+            type: String,
+            default: "" //store a url/path
         },
         role: {
             type: String,
