@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.routes.js"
 
-//DB Connection
+//load env var & DB Connection
 dotenv.config();
 connectDB();
 
