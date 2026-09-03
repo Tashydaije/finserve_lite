@@ -70,7 +70,7 @@ export const register = async (req, res) => {
         // set tokens as HTTP-only cookies
         setTokenCookies(res, accessToken, refreshToken);
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "User created successfully",
             user: {
                 id: user._id,
@@ -81,7 +81,7 @@ export const register = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -115,7 +115,7 @@ export const login = async (req, res) => {
         // set as cookies
         setTokenCookies(res, accessToken, refreshToken);
 
-        res.status(200).json({ 
+        return res.status(200).json({ 
             message: "Logged In successfully",
             user: {
                 id: user._id,
@@ -127,32 +127,32 @@ export const login = async (req, res) => {
          });
 
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
 // Refresh token route hit silently by frontend when access token expires
 // Generates new refresh token to invalidate old one
-export const refresh = async (res, req) => {
+export const refresh = async (req, res) => {
     try {
         // pull refresh token from cookies
         const token = req.cookies.refreshToken;
 
         if (!token) {
-            res.status(401).json({ message: "No refresh token, please login again" });
+            return res.status(401).json({ message: "No refresh token, please login again" });
         }
 
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
         } catch (error) {
-            res.status(403).json({ message: "Invalid or expired refresh token, please login again" });
+            return res.status(403).json({ message: "Invalid or expired refresh token, please login again" });
         }
 
         // find user
         const user = await User.findById(decoded.id);
         if (!user || !user.isActive) {
-            res.status(403).json({ message: "User not found or deactivated" });
+            return res.status(403).json({ message: "User not found or deactivated" });
         }
 
         // Rotation: generate new access & refresh token
@@ -162,11 +162,11 @@ export const refresh = async (res, req) => {
         // Overwrite the set cookies
         setTokenCookies(res, newAccessToken, newRefreshToken);
 
-        res.status(200).json({ message: "Token Refreshed Successfully" });
+        return res.status(200).json({ message: "Token Refreshed Successfully" });
 
 
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -184,5 +184,5 @@ export const logout = async (req, res) => {
         sameSite: "strict"
     });
 
-    res.status(200).json({ message: "Logged out successfully" });
+    return res.status(200).json({ message: "Logged out successfully" });
 };
