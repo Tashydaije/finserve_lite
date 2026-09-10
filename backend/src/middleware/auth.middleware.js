@@ -11,7 +11,7 @@ import User from "../models/User.js";
 // The frontend should then call /auth/refresh to get a new one.
 // -------------------------------------------------------
 
-export const protect = async (req, res, next) => {
+const protect = async (req, res, next) => {
     try {
         // Read access token from cookie
         const token = req.cookies.accessToken;
@@ -36,3 +36,5 @@ export const protect = async (req, res, next) => {
     }
        
 };
+
+export default protect;

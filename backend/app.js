@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./src/config/db.js";
-import authRoutes from "./src/routes/auth.routes.js"
+import authRoutes from "./src/routes/auth.routes.js";
+import userRoutes from "./src/routes/user.routes.js";
 
 //load env var & DB Connection
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 
 //App routes,
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 //test route
 app.get("/", (req, res) => {
